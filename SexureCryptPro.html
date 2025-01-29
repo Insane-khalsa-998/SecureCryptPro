@@ -1,1 +1,169 @@
-he
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureCrypt Pro - Security Toolkit</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body class="antialiased">
+    <!-- Navigation -->
+    <nav class="glass-panel fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center space-x-4">
+                    <span class="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                        SecureCrypt Pro
+                    </span>
+                    <div class="hidden md:flex space-x-2 ml-8">
+                        <button onclick="showSection('home')" class="nav-item">Home</button>
+                        <button onclick="showSection('encrypt')" class="nav-item">Encryption</button>
+                        <button onclick="showSection('stego')" class="nav-item">Steganography</button>
+                        <button onclick="showSection('bruteforce')" class="nav-item">Bruteforce</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 px-6 pb-12 max-w-7xl mx-auto">
+        <!-- Home Section -->
+        <section id="home" class="glass-panel p-8">
+            <div class="text-center max-w-3xl mx-auto">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                    Advanced Data Security Suite
+                </h1>
+                <p class="text-lg text-gray-300 mb-8">
+                    Professional-grade cryptographic tools for modern security needs
+                </p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="glass-panel p-6">
+                        <h3 class="text-xl font-semibold mb-4">Features</h3>
+                        <ul class="space-y-2 text-gray-300">
+                            <li>• AES-256 Encryption</li>
+                            <li>• Image Steganography</li>
+                            <li>• Text Obfuscation</li>
+                            <li>• Password Recovery</li>
+                        </ul>
+                    </div>
+                    <div class="glass-panel p-6">
+                        <h3 class="text-xl font-semibold mb-4">Quick Start</h3>
+                        <button onclick="showSection('encrypt')" class="btn-primary w-full mb-3">
+                            Encrypt Text
+                        </button>
+                        <button onclick="showSection('stego')" class="btn-primary w-full">
+                            Hide in Image
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Encryption Section -->
+        <section id="encrypt" class="hidden glass-panel p-8 mt-8">
+            <h2 class="text-2xl font-bold mb-6">🔒 Encryption Toolkit</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="space-y-6">
+                    <div>
+                        <label class="block mb-3 font-medium">Encryption Type</label>
+                        <select id="encType" class="input-field w-full">
+                            <option value="AES">AES-256 (Recommended)</option>
+                            <option value="DES">DES</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block mb-3 font-medium">Secret Key</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="encKey" class="input-field flex-1" placeholder="Enter encryption key">
+                            <button onclick="generateKey()" class="btn-primary">Generate</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="space-y-6">
+                    <div>
+                        <label class="block mb-3 font-medium">Input Text</label>
+                        <textarea id="inputText" class="input-field w-full h-32" placeholder="Enter text to encrypt/decrypt"></textarea>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <button onclick="encryptText()" class="btn-primary">Encrypt</button>
+                        <button onclick="decryptText()" class="btn-primary">Decrypt</button>
+                    </div>
+                    <div>
+                        <label class="block mb-3 font-medium">Output</label>
+                        <textarea id="outputText" class="input-field w-full h-32" readonly></textarea>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Steganography Section -->
+        <section id="stego" class="hidden glass-panel p-8 mt-8">
+            <h2 class="text-2xl font-bold mb-6">🖼️ Steganography Tools</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="space-y-6">
+                    <div class="glass-panel p-6 text-center cursor-pointer border-2 border-dashed border-gray-600 hover:border-indigo-400 transition-colors">
+                        <input type="file" id="imageUpload" class="hidden" accept="image/*">
+                        <label for="imageUpload" class="cursor-pointer">
+                            <div class="text-4xl mb-4">📁</div>
+                            <p class="text-gray-300">Click to upload image</p>
+                            <p class="text-sm text-gray-400">PNG or JPG (Max 5MB)</p>
+                        </label>
+                    </div>
+                    <div id="imagePreview" class="hidden"></div>
+                </div>
+                
+                <div class="space-y-6">
+                    <div>
+                        <label class="block mb-3 font-medium">Secret Message</label>
+                        <textarea id="secretMessage" class="input-field w-full h-32" placeholder="Enter message to hide"></textarea>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <button onclick="hideMessage()" class="btn-primary">Hide in Image</button>
+                        <button onclick="revealMessage()" class="btn-primary">Extract Message</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bruteforce Section -->
+        <section id="bruteforce" class="hidden glass-panel p-8 mt-8">
+            <h2 class="text-2xl font-bold mb-6">🔑 Password Recovery</h2>
+            <div class="space-y-6">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="glass-panel p-6">
+                        <h3 class="font-medium mb-4">Target File</h3>
+                        <input type="file" id="targetFile" class="input-field w-full">
+                    </div>
+                    <div class="glass-panel p-6">
+                        <h3 class="font-medium mb-4">Attack Settings</h3>
+                        <select class="input-field w-full">
+                            <option>Dictionary Attack</option>
+                            <option>Brute Force Attack</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="glass-panel p-6">
+                    <h3 class="font-medium mb-4">Progress</h3>
+                    <div class="progress-bar">
+                        <div id="progress" class="progress-fill w-0"></div>
+                    </div>
+                    <div class="mt-4 flex justify-between text-sm text-gray-300">
+                        <span>Attempts: <span id="attemptCount">0</span></span>
+                        <span>Speed: <span id="speed">0</span> p/s</span>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <button onclick="startAttack()" class="btn-primary px-8">Start Recovery</button>
+                </div>
+            </div>
+        </section>
+    </main>
+<script src="login.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</body>
+</html>
