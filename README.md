@@ -1,4 +1,4 @@
-```markdown
+markdown
 # SecureCrypt Pro 🔒
 
 **A Modern Security Toolkit for Encryption & Steganography**  
