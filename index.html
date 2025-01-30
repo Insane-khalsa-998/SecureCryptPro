@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate Security Toolkit</title>
+    <title>SecureCrypt Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @keyframes spin { 100% { transform: rotate(360deg); } }
         .loader { @apply w-8 h-8 border-4 border-t-transparent rounded-full animate-spin; }
         .toast { @apply fixed bottom-4 right-4 p-4 rounded-lg opacity-0 transition-opacity; }
+        .hidden-section { display: none; }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-100 min-h-screen">
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+
     <!-- Toasts -->
     <div id="toastContainer"></div>
 
@@ -23,11 +27,12 @@
     <!-- Navbar -->
     <nav class="sticky top-0 bg-gray-800/90 backdrop-blur-sm z-40">
         <div class="container mx-auto px-4 py-3 flex flex-wrap items-center">
-            <div class="text-xl font-bold mr-8">🛡️ SecPro</div>
-            <div class="flex flex-wrap gap-4" id="navLinks">
+            <div class="text-xl font-bold mr-8">🛡️ SecureCrypt</div>
+            <div class="flex flex-wrap gap-4">
                 <button class="nav-btn" data-section="hero">Home</button>
                 <button class="nav-btn" data-section="encrypt">Encrypt</button>
                 <button class="nav-btn" data-section="stegano">Stegano</button>
+                <button class="nav-btn" data-section="passage">Passage</button>
                 <button class="nav-btn" data-section="bruteforce">BruteForce</button>
             </div>
         </div>
@@ -37,41 +42,21 @@
     <main class="container mx-auto px-4 py-8 space-y-12">
         <!-- Hero Section -->
         <section id="hero" class="text-center py-16 px-4">
-            <h1 class="text-4xl md:text-6xl font-bold mb-6">Ultimate Security Toolkit</h1>
-            <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
-                <div class="bg-gray-800 p-4 rounded-xl">
-                    <h3 class="font-bold mb-2">🔒 AES-256 Encryption</h3>
-                    <p class="text-sm text-gray-400">Military-grade symmetric encryption</p>
-                </div>
-                <div class="bg-gray-800 p-4 rounded-xl">
-                    <h3 class="font-bold mb-2">🖼️ Steganography</h3>
-                    <p class="text-sm text-gray-400">Hide data in images/text</p>
-                </div>
-                <div class="bg-gray-800 p-4 rounded-xl">
-                    <h3 class="font-bold mb-2">🔑 Password Recovery</h3>
-                    <p class="text-sm text-gray-400">Smart brute-force attacks</p>
-                </div>
-            </div>
-            <div class="flex justify-center gap-4">
-                <button class="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-lg" data-section="encrypt">Get Started</button>
-                <button class="bg-gray-700 hover:bg-gray-600 px-8 py-3 rounded-lg" id="hotkeysBtn">Hotkeys</button>
-            </div>
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">Secure Security Toolkit</h1>
+            <button class="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-lg" 
+                    data-section="encrypt">Get Started</button>
         </section>
 
         <!-- Encryption Section -->
-        <section id="encrypt" class="hidden bg-gray-800 p-6 rounded-xl space-y-6">
-            <h2 class="text-2xl font-bold">🔐 AES Encryption</h2>
+        <section id="encrypt" class="hidden-section bg-gray-800 p-6 rounded-xl space-y-6">
+            <h2 class="text-2xl font-bold">🔐 AES-256 Encryption</h2>
             <div class="grid md:grid-cols-2 gap-6">
-                <!-- Key Management -->
                 <div class="space-y-4">
                     <div class="bg-gray-700 p-4 rounded-lg">
-                        <label class="block mb-2">Key Strength</label>
-                        <select id="keyStrength" class="w-full p-2 bg-gray-900 rounded">
-                            <option value="128">AES-128</option>
-                            <option value="256">AES-256</option>
-                        </select>
-                        <div class="mt-4 grid grid-cols-2 gap-2">
-                            <button id="genKey" class="bg-green-600 hover:bg-green-700 p-2 rounded">Generate Key</button>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button id="genKey" class="bg-green-600 hover:bg-green-700 p-2 rounded">
+                                Generate Key
+                            </button>
                             <label class="bg-gray-600 hover:bg-gray-500 p-2 rounded text-center cursor-pointer">
                                 <input type="file" id="keyUpload" class="hidden"> Upload Key
                             </label>
@@ -86,22 +71,6 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Password Strength -->
-                    <div class="bg-gray-700 p-4 rounded-lg">
-                        <label class="block mb-2">Password Strength</label>
-                        <input type="password" id="password" 
-                               class="w-full p-2 bg-gray-900 rounded" 
-                               placeholder="Enter password">
-                        <div class="h-1 bg-gray-600 mt-2 rounded">
-                            <div id="strengthBar" class="h-full w-0 transition-all"></div>
-                        </div>
-                        <div id="strengthText" class="text-sm mt-1"></div>
-                    </div>
-                </div>
-
-                <!-- Encryption Workflow -->
-                <div class="space-y-4">
                     <div class="relative">
                         <textarea id="inputText" 
                                   class="w-full p-2 bg-gray-900 rounded h-48" 
@@ -112,41 +81,121 @@
                         <button id="encryptBtn" class="bg-blue-600 hover:bg-blue-700 p-2 rounded">Encrypt</button>
                         <button id="decryptBtn" class="bg-purple-600 hover:bg-purple-700 p-2 rounded">Decrypt</button>
                     </div>
+                </div>
+                <div class="space-y-4">
                     <div class="relative">
                         <textarea id="outputText" 
                                   class="w-full p-2 bg-gray-900 rounded h-48" 
                                   placeholder="Result" readonly></textarea>
-                        <button class="copy-btn absolute right-2 bottom-2 bg-gray-600 hover:bg-gray-500 p-1 rounded">📋 Copy</button>
+                        <button class="copy-btn absolute right-2 bottom-2 bg-gray-600 hover:bg-gray-500 p-1 rounded">
+                            📋 Copy
+                        </button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Other Sections (Stegano/BruteForce) -->
-        <!-- Similar structured sections for other tools -->
+        <!-- Steganography Section -->
+        <section id="stegano" class="hidden-section bg-gray-800 p-6 rounded-xl space-y-6">
+            <h2 class="text-2xl font-bold">🖼️ Image Steganography</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <input type="file" id="steganoFile" 
+                           class="w-full p-2 bg-gray-900 rounded"
+                           accept="image/*">
+                    <textarea id="secretMessage" 
+                              class="w-full p-2 bg-gray-900 rounded h-32" 
+                              placeholder="Secret message"></textarea>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button class="bg-blue-600 hover:bg-blue-700 p-2 rounded">Hide Message</button>
+                        <button class="bg-purple-600 hover:bg-purple-700 p-2 rounded">Reveal Message</button>
+                    </div>
+                </div>
+                <div class="bg-gray-900 p-4 rounded-lg">
+                    <div id="imagePreview" class="aspect-square bg-gray-700 rounded"></div>
+                    <button class="download-stegano hidden mt-2 bg-gray-600 hover:bg-gray-500 p-2 rounded w-full">
+                        ⤓ Download
+                    </button>
+                </div>
+            </div>
+        </section>
 
+        <!-- Passage Creation Section -->
+        <section id="passage" class="hidden-section bg-gray-800 p-6 rounded-xl space-y-6">
+            <h2 class="text-2xl font-bold">📜 Secret Passage</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <textarea id="secretText" 
+                              class="w-full p-2 bg-gray-900 rounded h-48" 
+                              placeholder="Enter secret message"></textarea>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button class="bg-green-600 hover:bg-green-700 p-2 rounded">Generate Passage</button>
+                        <button class="bg-blue-600 hover:bg-blue-700 p-2 rounded">Decode Passage</button>
+                    </div>
+                </div>
+                <div class="bg-gray-900 p-4 rounded-lg">
+                    <textarea id="generatedPassage" 
+                              class="w-full p-2 bg-gray-800 rounded h-48" 
+                              placeholder="Generated passage will appear here"></textarea>
+                    <button class="copy-passage mt-2 bg-gray-600 hover:bg-gray-500 p-2 rounded w-full">
+                        📋 Copy Passage
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Brute Force Section -->
+        <section id="bruteforce" class="hidden-section bg-gray-800 p-6 rounded-xl space-y-6">
+            <h2 class="text-2xl font-bold">💣 Brute Force Attack</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <input type="file" id="targetFile" class="w-full p-2 bg-gray-900 rounded">
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h3 class="font-bold mb-2">Wordlist Options</h3>
+                        <select class="w-full p-2 bg-gray-800 rounded mb-4">
+                            <option>Top 100 Passwords</option>
+                            <option>Common Phrases</option>
+                            <option>Custom List</option>
+                        </select>
+                        <textarea class="w-full p-2 bg-gray-800 rounded h-32" 
+                                  placeholder="One password per line"></textarea>
+                    </div>
+                    <button class="bg-red-600 hover:bg-red-700 p-2 rounded w-full">Start Attack</button>
+                </div>
+                <div class="bg-gray-900 p-4 rounded-lg">
+                    <div class="h-2 bg-gray-800 rounded-full mb-4">
+                        <div class="h-full bg-red-500 rounded-full transition-all" style="width: 30%"></div>
+                    </div>
+                    <div class="text-sm space-y-2">
+                        <p>Tried: <span class="font-mono">0</span> passwords</p>
+                        <p>Current: <span class="font-mono text-red-400">-</span></p>
+                        <p>Found: <span class="font-mono text-green-400">Not discovered</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <!-- Modals -->
-    <div id="hotkeysModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center p-4">
-        <div class="bg-gray-800 p-6 rounded-xl max-w-md w-full">
-            <h3 class="text-xl font-bold mb-4">🚀 Hotkeys</h3>
-            <div class="space-y-2">
-                <div class="flex justify-between"><kbd>Ctrl + Alt + C</kbd> Clear All</div>
-                <div class="flex justify-between"><kbd>Ctrl + S</kbd> Save Key</div>
-                <div class="flex justify-between"><kbd>Esc</kbd> Close Modals</div>
-            </div>
-            <button class="mt-4 bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded w-full" 
-                    onclick="toggleModal('hotkeysModal')">Close</button>
-        </div>
-    </div>
-
     <script>
+        // Security Configuration
+        const SECURITY = {
+            MAX_FILE_SIZE: 5, // MB
+            ALLOWED_STEGANO_TYPES: ['image/jpeg', 'image/png'],
+            ALLOWED_BRUTEFORCE_TYPES: ['application/pdf', 'application/zip']
+        };
+
+        // XSS Protection
+        const sanitizeHTML = (str) => {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        };
+
         // Toast System
         function showToast(message, type = 'info') {
             const toast = document.createElement('div');
-            toast.className = `toast bg-${type === 'error' ? 'red' : 'green'}-500`;
-            toast.textContent = message;
+            toast.className = `toast bg-${type === 'error' ? 'red' : 'green'}-600 text-white`;
+            toast.textContent = sanitizeHTML(message);
             document.getElementById('toastContainer').appendChild(toast);
             
             setTimeout(() => toast.style.opacity = '1', 10);
@@ -156,76 +205,118 @@
             }, 3000);
         }
 
-        // Password Strength Meter
-        document.getElementById('password').addEventListener('input', function(e) {
-            const password = e.target.value;
-            let strength = 0;
-            
-            strength += password.length >= 8 ? 1 : 0;
-            strength += /[A-Z]/.test(password) ? 1 : 0;
-            strength += /[0-9]/.test(password) ? 1 : 0;
-            strength += /[^A-Za-z0-9]/.test(password) ? 1 : 0;
-            
-            const strengthMap = {
-                0: ['w-0', 'bg-red-500', 'Very Weak'],
-                1: ['w-1/4', 'bg-red-500', 'Weak'],
-                2: ['w-1/2', 'bg-yellow-500', 'Moderate'],
-                3: ['w-3/4', 'bg-green-500', 'Strong'],
-                4: ['w-full', 'bg-green-600', 'Very Strong']
-            };
-            
-            const [width, color, text] = strengthMap[Math.min(strength, 4)];
-            document.getElementById('strengthBar').className = `${width} ${color}`;
-            document.getElementById('strengthText').textContent = text;
-        });
-
-        // Encryption Core
-        let currentKey = null;
-        
-        async function generateKey() {
-            showLoading(true);
-            try {
-                const strength = parseInt(document.getElementById('keyStrength').value);
-                currentKey = await crypto.subtle.generateKey(
-                    { name: "AES-GCM", length: strength },
-                    true,
-                    ["encrypt", "decrypt"]
-                );
-                
-                const exported = await crypto.subtle.exportKey("jwk", currentKey);
-                document.getElementById('keyPreview').value = `AES-${strength}_${exported.k.substr(0, 8)}...`;
-                showToast('Key generated successfully!');
-            } catch (error) {
-                showToast('Key generation failed!', 'error');
-            } finally {
-                showLoading(false);
-            }
-        }
-
-        // Utility Functions
-        function showLoading(show) {
-            document.getElementById('loading').style.display = show ? 'flex' : 'none';
-        }
-
-        function toggleModal(id) {
-            document.getElementById(id).classList.toggle('hidden');
-        }
-
-        // Event Listeners
-        document.querySelectorAll('.nav-btn').forEach(btn => {
+        // Section Management
+        document.querySelectorAll('[data-section]').forEach(btn => {
             btn.addEventListener('click', () => {
-                document.querySelectorAll('section').forEach(s => 
-                    s.classList.toggle('hidden', s.id !== btn.dataset.section)
-                );
+                const sectionId = btn.dataset.section;
+                document.querySelectorAll('section').forEach(s => {
+                    s.classList.toggle('hidden-section', s.id !== sectionId);
+                });
             });
         });
 
-        document.getElementById('hotkeysBtn').addEventListener('click', () => toggleModal('hotkeysModal'));
-        document.getElementById('genKey').addEventListener('click', generateKey);
+        // File Validation
+        function validateFile(file, type = 'stegano') {
+            if (!file) return false;
+            
+            // Size validation
+            if (file.size > SECURITY.MAX_FILE_SIZE * 1024 * 1024) {
+                showToast(`File size exceeds ${SECURITY.MAX_FILE_SIZE}MB`, 'error');
+                return false;
+            }
+            
+            // Type validation
+            const allowedTypes = type === 'stegano' 
+                ? SECURITY.ALLOWED_STEGANO_TYPES 
+                : SECURITY.ALLOWED_BRUTEFORCE_TYPES;
+            
+            if (!allowedTypes.includes(file.type)) {
+                showToast(`Invalid file type: ${file.type}`, 'error');
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Secure Download
+        function secureDownload(content, fileName, type = 'text/plain') {
+            const blob = new Blob([content], { type });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Clipboard Security
+        async function secureCopy(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                showToast('Copied to clipboard');
+            } catch (err) {
+                showToast('Clipboard access denied', 'error');
+            }
+        }
+
+        // Encryption Functions
+        let currentKey = null;
+        
+        document.getElementById('genKey').addEventListener('click', async () => {
+            try {
+                currentKey = await crypto.subtle.generateKey(
+                    { name: "AES-GCM", length: 256 },
+                    true,
+                    ["encrypt", "decrypt"]
+                );
+                const exported = await crypto.subtle.exportKey("jwk", currentKey);
+                document.getElementById('keyPreview').value = `AES-256_${exported.k.substr(0, 8)}...`;
+                showToast('Key generated');
+            } catch (error) {
+                showToast('Key generation failed', 'error');
+            }
+        });
+
+        // Button Handlers
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const text = btn.parentElement.querySelector('textarea').value;
+                secureCopy(sanitizeHTML(text));
+            });
+        });
+
+        document.querySelectorAll('.download-key-btn').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                if (!currentKey) return showToast('Generate key first', 'error');
+                try {
+                    const exported = await crypto.subtle.exportKey("jwk", currentKey);
+                    secureDownload(JSON.stringify(exported), `securecrypt-key-${Date.now()}.key`);
+                } catch (error) {
+                    showToast('Key export failed', 'error');
+                }
+            });
+        });
 
         // Initialize
-        document.querySelectorAll('.hidden').forEach(el => el.classList.add('hidden'));
-        document.getElementById('hero').classList.remove('hidden');
+        document.querySelectorAll('.hidden-section').forEach(s => s.classList.add('hidden-section'));
+        document.getElementById('hero').classList.remove('hidden-section');
+
+        // Security Event Listeners
+        document.querySelectorAll('input[type="file"]').forEach(input => {
+            input.addEventListener('change', (e) => {
+                if (!validateFile(e.target.files[0], input.id === 'steganoFile' ? 'stegano' : 'bruteforce')) {
+                    input.value = '';
+                }
+            });
+        });
+
+        // Passage Generation (Example Implementation)
+        document.querySelector('#passage button:first-child').addEventListener('click', () => {
+            const secret = sanitizeHTML(document.getElementById('secretText').value);
+            // Implement actual passage generation logic here
+            document.getElementById('generatedPassage').value = 
+                `This is a sample passage containing your secret: ${secret}`;
+        });
     </script>
 </body>
 </html>
