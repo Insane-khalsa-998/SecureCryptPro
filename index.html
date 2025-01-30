@@ -1,582 +1,234 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SecureCrypt Pro - Security Toolkit</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <title>Security Toolkit Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-    /* style.css */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
-:root {
-    --primary: #6366f1;
-    --primary-dark: #4f46e5;
-    --secondary: #1e293b;
-    --accent: #818cf8;
-    --text-primary: #e2e8f0;
-    --text-secondary: #94a3b8;
-}
-
-/* Base Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-    min-height: 100vh;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    color: var(--text-primary);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-}
-
-/* Glassmorphism Effects */
-.glass-panel {
-    background: rgba(30, 41, 59, 0.65);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 1rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-}
-
-/* Form Elements */
-.input-field {
-    background: rgba(15, 23, 42, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 0.75rem;
-    padding: 0.75rem 1rem;
-    color: var(--text-primary);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    width: 100%;
-}
-
-.input-field:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
-}
-
-/* Buttons */
-.btn-primary {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.75rem;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    font-weight: 500;
-}
-
-.btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
-}
-
-/* Navigation */
-.nav-item {
-    color: var(--text-secondary);
-    padding: 0.75rem 1.25rem;
-    border-radius: 0.75rem;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
-}
-
-.nav-item:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--text-primary);
-}
-
-.nav-item.active {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-    color: white;
-}
-
-/* Progress Indicators */
-.progress-bar {
-    background: rgba(99, 102, 241, 0.2);
-    border-radius: 1rem;
-    height: 0.75rem;
-    overflow: hidden;
-}
-
-.progress-fill {
-    background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
-    border-radius: 1rem;
-    height: 100%;
-    transition: width 0.3s ease;
-}
-
-/* File Upload Areas */
-.file-upload {
-    border: 2px dashed rgba(255, 255, 255, 0.2);
-    border-radius: 1rem;
-    padding: 2rem;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.file-upload:hover {
-    border-color: var(--primary);
-    background: rgba(99, 102, 241, 0.05);
-}
-
-/* Image Previews */
-.stego-preview {
-    max-width: 100%;
-    height: auto;
-    border-radius: 0.75rem;
-    margin: 0 auto;
-    display: block;
-}
-
-/* Toast Notifications */
-.toast {
-    position: fixed;
-    top: 1.5rem;
-    right: 1.5rem;
-    padding: 1rem 1.5rem;
-    border-radius: 0.75rem;
-    color: white;
-    z-index: 1000;
-    animation: slideIn 0.3s ease forwards;
-}
-
-.toast.success {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-}
-
-.toast.error {
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-}
-
-.toast.warning {
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-}
-
-@keyframes slideIn {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .glass-panel {
-        padding: 1.5rem;
-    }
-
-    .input-field, .btn-primary {
-        padding: 0.65rem 1rem;
-    }
-
-    .nav-item {
-        padding: 0.5rem 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    body {
-        background: #0f172a;
-    }
-
-    .glass-panel {
-        border-radius: 0.75rem;
-        backdrop-filter: blur(8px);
-    }
-}
-
-/* Utility Classes */
-.hidden {
-    display: none !important;
-}
-
-.text-gradient {
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-}
-
-.max-w-7xl {
-    max-width: 1280px;
-}
-
-.mx-auto {
-    margin-left: auto;
-    margin-right: auto;
-}
-.px-6 {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-}
-    </script>
+    <style>
+        /* Custom Styles */
+        .dark-bg { background: #0f172a; color: #f8fafc; }
+        .card { background: #1e293b; border-radius: 0.75rem; }
+        .crypto-animation { animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100% { opacity:1 } 50% { opacity:.5 } }
+        .hidden-section { display: none; }
+        .input-clear::-webkit-calendar-picker-indicator { display: none; }
+    </style>
 </head>
-<body class="antialiased">
-    <!-- Navigation -->
-    <nav class="glass-panel fixed w-full top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="flex items-center justify-between h-20">
-                <div class="flex items-center space-x-4">
-                    <span class="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
-                        SecureCrypt Pro
-                    </span>
-                    <div class="hidden md:flex space-x-2 ml-8">
-                        <button onclick="showSection('home')" class="nav-item">Home</button>
-                        <button onclick="showSection('encrypt')" class="nav-item">Encryption</button>
-                        <button onclick="showSection('stego')" class="nav-item">Steganography</button>
-                        <button onclick="showSection('bruteforce')" class="nav-item">Bruteforce</button>
-                    </div>
-                </div>
+<body class="dark-bg min-h-screen">
+    <!-- Navbar -->
+    <nav class="sticky top-0 bg-slate-800/95 backdrop-blur-sm z-50">
+        <div class="container mx-auto px-4 py-3 flex flex-wrap items-center">
+            <div class="text-xl font-bold mr-8">🔒 SecTools</div>
+            <div class="flex flex-wrap gap-4" id="navLinks">
+                <button class="nav-btn" data-section="hero">Home</button>
+                <button class="nav-btn" data-section="encrypt">Encrypt</button>
+                <button class="nav-btn" data-section="stegano">Stegano</button>
+                <button class="nav-btn" data-section="bruteforce">BruteForce</button>
             </div>
         </div>
     </nav>
 
-    <main class="pt-24 px-6 pb-12 max-w-7xl mx-auto">
-        <!-- Home Section -->
-        <section id="home" class="glass-panel p-8">
-            <div class="text-center max-w-3xl mx-auto">
-                <h1 class="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
-                    Advanced Data Security Suite
-                </h1>
-                <p class="text-lg text-gray-300 mb-8">
-                    Professional-grade cryptographic tools for modern security needs
-                </p>
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="glass-panel p-6">
-                        <h3 class="text-xl font-semibold mb-4">Features</h3>
-                        <ul class="space-y-2 text-gray-300">
-                            <li>• AES-256 Encryption</li>
-                            <li>• Image Steganography</li>
-                            <li>• Text Obfuscation</li>
-                            <li>• Password Recovery</li>
-                        </ul>
-                    </div>
-                    <div class="glass-panel p-6">
-                        <h3 class="text-xl font-semibold mb-4">Quick Start</h3>
-                        <button onclick="showSection('encrypt')" class="btn-primary w-full mb-3">
-                            Encrypt Text
-                        </button>
-                        <button onclick="showSection('stego')" class="btn-primary w-full">
-                            Hide in Image
-                        </button>
-                    </div>
-                </div>
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 space-y-12">
+        <!-- Hero Section -->
+        <section id="hero" class="text-center py-16">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">Security Toolkit</h1>
+            <div class="flex justify-center gap-4">
+                <button class="bg-blue-600 px-8 py-3 rounded-lg" data-section="encrypt">Get Started</button>
+                <button class="bg-slate-700 px-8 py-3 rounded-lg" id="aboutBtn">About</button>
             </div>
         </section>
 
         <!-- Encryption Section -->
-        <section id="encrypt" class="hidden glass-panel p-8 mt-8">
-            <h2 class="text-2xl font-bold mb-6">🔒 Encryption Toolkit</h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="space-y-6">
-                    <div>
-                        <label class="block mb-3 font-medium">Encryption Type</label>
-                        <select id="encType" class="input-field w-full">
-                            <option value="AES">AES-256 (Recommended)</option>
-                            <option value="DES">DES</option>
+        <section id="encrypt" class="hidden-section card p-6 space-y-6">
+            <h2 class="text-2xl font-bold">AES Encryption/Decryption</h2>
+            <div class="grid gap-4 md:grid-cols-2">
+                <div class="space-y-4">
+                    <div class="relative">
+                        <select id="keyStrength" class="w-full p-2 bg-slate-700 rounded-lg">
+                            <option value="128">128-bit</option>
+                            <option value="256">256-bit</option>
                         </select>
                     </div>
-                    <div>
-                        <label class="block mb-3 font-medium">Secret Key</label>
-                        <div class="flex gap-2">
-                            <input type="text" id="encKey" class="input-field flex-1" placeholder="Enter encryption key">
-                            <button onclick="generateKey()" class="btn-primary">Generate</button>
-                        </div>
+                    <div class="relative">
+                        <textarea id="inputText" class="w-full p-2 bg-slate-700 rounded-lg h-32" placeholder="Enter text"></textarea>
+                        <button class="clear-btn absolute right-2 top-2">×</button>
+                    </div>
+                    <div class="flex gap-4">
+                        <button class="bg-green-600 px-4 py-2 rounded" id="encryptBtn">Encrypt</button>
+                        <button class="bg-red-600 px-4 py-2 rounded" id="decryptBtn">Decrypt</button>
                     </div>
                 </div>
-                
-                <div class="space-y-6">
-                    <div>
-                        <label class="block mb-3 font-medium">Input Text</label>
-                        <textarea id="inputText" class="input-field w-full h-32" placeholder="Enter text to encrypt/decrypt"></textarea>
+                <div class="space-y-4">
+                    <div class="relative">
+                        <textarea id="outputText" class="w-full p-2 bg-slate-700 rounded-lg h-32" placeholder="Result" readonly></textarea>
+                        <button class="copy-btn absolute right-2 bottom-2 bg-slate-600 px-2 rounded">Copy</button>
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <button onclick="encryptText()" class="btn-primary">Encrypt</button>
-                        <button onclick="decryptText()" class="btn-primary">Decrypt</button>
-                    </div>
-                    <div>
-                        <label class="block mb-3 font-medium">Output</label>
-                        <textarea id="outputText" class="input-field w-full h-32" readonly></textarea>
+                    <div class="flex gap-4">
+                        <button class="bg-blue-600 px-4 py-2 rounded" id="genKey">Generate Key</button>
+                        <input type="file" id="keyUpload" class="hidden">
+                        <label for="keyUpload" class="bg-slate-600 px-4 py-2 rounded cursor-pointer">Upload Key</label>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Steganography Section -->
-        <section id="stego" class="hidden glass-panel p-8 mt-8">
-            <h2 class="text-2xl font-bold mb-6">🖼️ Steganography Tools</h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="space-y-6">
-                    <div class="glass-panel p-6 text-center cursor-pointer border-2 border-dashed border-gray-600 hover:border-indigo-400 transition-colors">
-                        <input type="file" id="imageUpload" class="hidden" accept="image/*">
-                        <label for="imageUpload" class="cursor-pointer">
-                            <div class="text-4xl mb-4">📁</div>
-                            <p class="text-gray-300">Click to upload image</p>
-                            <p class="text-sm text-gray-400">PNG or JPG (Max 5MB)</p>
-                        </label>
+        <section id="stegano" class="hidden-section card p-6 space-y-6">
+            <h2 class="text-2xl font-bold">Image Steganography</h2>
+            <div class="grid gap-4 md:grid-cols-2">
+                <div class="space-y-4">
+                    <input type="file" id="imageUpload" class="w-full" accept="image/*">
+                    <textarea id="secretMessage" class="w-full p-2 bg-slate-700 rounded-lg h-32" placeholder="Secret message"></textarea>
+                    <div class="flex gap-4">
+                        <button class="bg-purple-600 px-4 py-2 rounded" id="hideMessage">Hide</button>
+                        <button class="bg-blue-600 px-4 py-2 rounded" id="revealMessage">Reveal</button>
                     </div>
-                    <div id="imagePreview" class="hidden"></div>
                 </div>
-                
-                <div class="space-y-6">
-                    <div>
-                        <label class="block mb-3 font-medium">Secret Message</label>
-                        <textarea id="secretMessage" class="input-field w-full h-32" placeholder="Enter message to hide"></textarea>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <button onclick="hideMessage()" class="btn-primary">Hide in Image</button>
-                        <button onclick="revealMessage()" class="btn-primary">Extract Message</button>
-                    </div>
+                <div class="relative">
+                    <div id="imagePreview" class="bg-slate-700 rounded-lg aspect-square"></div>
+                    <button class="hidden download-btn absolute right-2 bottom-2 bg-slate-600 px-2 rounded">Download</button>
                 </div>
             </div>
         </section>
 
-        <!-- Bruteforce Section -->
-        <section id="bruteforce" class="hidden glass-panel p-8 mt-8">
-            <h2 class="text-2xl font-bold mb-6">🔑 Password Recovery</h2>
-            <div class="space-y-6">
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="glass-panel p-6">
-                        <h3 class="font-medium mb-4">Target File</h3>
-                        <input type="file" id="targetFile" class="input-field w-full">
-                    </div>
-                    <div class="glass-panel p-6">
-                        <h3 class="font-medium mb-4">Attack Settings</h3>
-                        <select class="input-field w-full">
-                            <option>Dictionary Attack</option>
-                            <option>Brute Force Attack</option>
-                        </select>
-                    </div>
+        <!-- Brute Force Section -->
+        <section id="bruteforce" class="hidden-section card p-6 space-y-6">
+            <h2 class="text-2xl font-bold">Brute Force Attack</h2>
+            <div class="grid gap-4 md:grid-cols-2">
+                <div class="space-y-4">
+                    <input type="file" id="targetFile" class="w-full">
+                    <textarea id="wordlist" class="w-full p-2 bg-slate-700 rounded-lg h-32" placeholder="Custom wordlist"></textarea>
+                    <button class="bg-red-600 px-4 py-2 rounded w-full" id="startAttack">Start Attack</button>
                 </div>
-                
-                <div class="glass-panel p-6">
-                    <h3 class="font-medium mb-4">Progress</h3>
-                    <div class="progress-bar">
-                        <div id="progress" class="progress-fill w-0"></div>
-                    </div>
-                    <div class="mt-4 flex justify-between text-sm text-gray-300">
-                        <span>Attempts: <span id="attemptCount">0</span></span>
-                        <span>Speed: <span id="speed">0</span> p/s</span>
-                    </div>
-                </div>
-                
-                <div class="text-center">
-                    <button onclick="startAttack()" class="btn-primary px-8">Start Recovery</button>
+                <div class="bg-slate-700 p-4 rounded-lg">
+                    <div id="progress" class="h-2 bg-slate-600 rounded-full mb-4"></div>
+                    <p id="status" class="text-sm">Ready</p>
+                    <p id="result" class="mt-4 font-mono"></p>
                 </div>
             </div>
         </section>
     </main>
-     <script>
-                // script.js
-            document.addEventListener('DOMContentLoaded', () => {
-                initializeApp();
+
+    <!-- Modals -->
+    <div id="aboutModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center p-4">
+        <div class="card p-6 max-w-md w-full">
+            <h3 class="text-xl font-bold mb-4">About Security Tools</h3>
+            <p class="text-slate-300">Client-side security toolkit featuring AES encryption, steganography, and password recovery tools.</p>
+            <button class="mt-4 bg-slate-600 px-4 py-2 rounded" onclick="toggleModal('aboutModal')">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Crypto Operations
+        let currentKey = null;
+
+        async function generateAESKey(strength = 256) {
+            return window.crypto.subtle.generateKey(
+                { name: "AES-GCM", length: strength },
+                true,
+                ["encrypt", "decrypt"]
+            );
+        }
+
+        async function encryptText(text, key) {
+            const encoded = new TextEncoder().encode(text);
+            const iv = window.crypto.getRandomValues(new Uint8Array(12));
+            const encrypted = await window.crypto.subtle.encrypt(
+                { name: "AES-GCM", iv },
+                key,
+                encoded
+            );
+            return { iv, encrypted };
+        }
+
+        async function decryptText(encrypted, key, iv) {
+            try {
+                const decrypted = await window.crypto.subtle.decrypt(
+                    { name: "AES-GCM", iv },
+                    key,
+                    encrypted
+                );
+                return new TextDecoder().decode(decrypted);
+            } catch (error) {
+                return "Decryption failed - invalid key or data";
+            }
+        }
+
+        // UI Handlers
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const section = btn.dataset.section;
+                document.querySelectorAll('section').forEach(s => 
+                    s.classList.toggle('hidden-section', s.id !== section)
+                );
             });
+        });
+
+        document.getElementById('genKey').addEventListener('click', async () => {
+            const strength = parseInt(document.getElementById('keyStrength').value);
+            currentKey = await generateAESKey(strength);
+            alert('Key generated! Download it now.');
+        });
+
+        document.getElementById('encryptBtn').addEventListener('click', async () => {
+            const text = document.getElementById('inputText').value;
+            if (!currentKey) return alert('Generate or upload a key first!');
             
-            function initializeApp() {
-                // Set up event listeners
-                setupNavigation();
-                setupEncryption();
-                setupSteganography();
-                setupBruteforce();
-                
-                // Show home section by default
-                showSection('home');
+            const { iv, encrypted } = await encryptText(text, currentKey);
+            const result = btoa(String.fromCharCode(...iv)) + ':' + btoa(String.fromCharCode(...new Uint8Array(encrypted)));
+            document.getElementById('outputText').value = result;
+        });
+
+        document.getElementById('decryptBtn').addEventListener('click', async () => {
+            const [ivPart, dataPart] = document.getElementById('inputText').value.split(':');
+            const iv = new Uint8Array(atob(ivPart).split('').map(c => c.charCodeAt(0)));
+            const encrypted = new Uint8Array(atob(dataPart).split('').map(c => c.charCodeAt(0)));
+            
+            try {
+                const decrypted = await decryptText(encrypted, currentKey, iv);
+                document.getElementById('outputText').value = decrypted;
+            } catch (error) {
+                alert('Decryption failed! Check your key and data.');
             }
-            
-            // Navigation System
-            function setupNavigation() {
-                const navItems = document.querySelectorAll('.nav-item');
-                navItems.forEach(item => {
-                    item.addEventListener('click', function() {
-                        navItems.forEach(nav => nav.classList.remove('active'));
-                        this.classList.add('active');
-                    });
-                });
-            }
-            
-            function showSection(sectionId) {
-                document.querySelectorAll('main > section').forEach(section => {
-                    section.classList.add('hidden');
-                });
-                document.getElementById(sectionId).classList.remove('hidden');
-            }
-            
-            // Encryption Module
-            function setupEncryption() {
-                const generateKeyBtn = document.getElementById('generateKeyBtn');
-                const encryptBtn = document.getElementById('encryptBtn');
-                const decryptBtn = document.getElementById('decryptBtn');
-            
-                generateKeyBtn?.addEventListener('click', generateKey);
-                encryptBtn?.addEventListener('click', encryptText);
-                decryptBtn?.addEventListener('click', decryptText);
-            }
-            
-            function generateKey() {
-                const keyLength = document.getElementById('keyLength')?.value || 256;
-                const key = CryptoJS.lib.WordArray.random(keyLength/8).toString();
-                document.getElementById('encKey').value = key;
-            }
-            
-            function encryptText() {
-                try {
-                    const text = document.getElementById('inputText').value;
-                    const key = document.getElementById('encKey').value;
-                    const encrypted = CryptoJS.AES.encrypt(text, key).toString();
-                    document.getElementById('outputText').value = encrypted;
-                    showToast('Encryption successful!', 'success');
-                } catch (error) {
-                    showToast('Encryption failed!', 'error');
-                    console.error('Encryption error:', error);
-                }
-            }
-            
-            function decryptText() {
-                try {
-                    const ciphertext = document.getElementById('inputText').value;
-                    const key = document.getElementById('encKey').value;
-                    const decrypted = CryptoJS.AES.decrypt(ciphertext, key).toString(CryptoJS.enc.Utf8);
-                    
-                    if (!decrypted) throw new Error('Invalid key or ciphertext');
-                    
-                    document.getElementById('outputText').value = decrypted;
-                    showToast('Decryption successful!', 'success');
-                } catch (error) {
-                    showToast('Decryption failed! Invalid key or ciphertext', 'error');
-                    console.error('Decryption error:', error);
-                }
-            }
-            
-            // Steganography Module
-            function setupSteganography() {
-                const imageUpload = document.getElementById('imageUpload');
-                const hideBtn = document.getElementById('hideBtn');
-                const revealBtn = document.getElementById('revealBtn');
-            
-                imageUpload?.addEventListener('change', handleImageUpload);
-                hideBtn?.addEventListener('click', hideMessage);
-                revealBtn?.addEventListener('click', revealMessage);
-            }
-            
-            function handleImageUpload(event) {
-                const file = event.target.files[0];
-                if (!file) return;
-            
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const preview = document.getElementById('imagePreview');
-                    preview.innerHTML = `
-                        <img src="${e.target.result}" 
-                             class="stego-preview" 
-                             alt="Upload preview">
-                        <p class="text-sm text-gray-400 mt-2">${file.name}</p>
-                    `;
-                    preview.classList.remove('hidden');
-                };
-                reader.readAsDataURL(file);
-            }
-            
-            function hideMessage() {
-                const message = document.getElementById('secretMessage').value;
-                const imageInput = document.getElementById('imageUpload');
-                
-                if (!message || !imageInput.files[0]) {
-                    showToast('Please upload an image and enter a message!', 'warning');
-                    return;
-                }
-            
-                // Steganography implementation would go here
-                showToast('Message hidden in image!', 'success');
-            }
-            
-            function revealMessage() {
-                const imageInput = document.getElementById('imageUpload');
-                
-                if (!imageInput.files[0]) {
-                    showToast('Please upload an image with hidden message!', 'warning');
-                    return;
-                }
-            
-                // Message extraction implementation would go here
-                document.getElementById('secretMessage').value = 'Extracted message';
-                showToast('Message revealed!', 'success');
-            }
-            
-            // Bruteforce Module
-            function setupBruteforce() {
-                const startBruteforceBtn = document.getElementById('startBruteforceBtn');
-                startBruteforceBtn?.addEventListener('click', startBruteforceAttack);
-            }
-            
-            function startBruteforceAttack() {
-                const progressBar = document.getElementById('progress');
-                const attemptCount = document.getElementById('attemptCount');
-                const speedDisplay = document.getElementById('speed');
-                
-                let progress = 0;
-                let attempts = 0;
-                let startTime = Date.now();
-            
-                const attackInterval = setInterval(() => {
-                    progress += Math.random() * 2;
-                    attempts += Math.floor(Math.random() * 100);
-                    
-                    const currentTime = Date.now();
-                    const elapsedSeconds = (currentTime - startTime) / 1000;
-                    const speed = Math.floor(attempts / elapsedSeconds);
-            
-                    if(progress >= 100) {
-                        clearInterval(attackInterval);
-                        progress = 100;
-                        showToast('Password not found!', 'error');
-                    }
-            
-                    progressBar.style.width = `${progress}%`;
-                    attemptCount.textContent = attempts;
-                    speedDisplay.textContent = speed;
-                }, 100);
-            }
-            
-            // UI Utilities
-            function showToast(message, type = 'info') {
-                const toast = document.createElement('div');
-                toast.className = `toast ${type} fixed top-4 right-4 glass-panel p-4 rounded-lg`;
-                toast.textContent = message;
-                
-                document.body.appendChild(toast);
-                setTimeout(() => toast.remove(), 3000);
-            }
-            
-            function handleFileUpload(inputId, previewId) {
-                const input = document.getElementById(inputId);
-                const preview = document.getElementById(previewId);
-            
-                input.addEventListener('change', function(e) {
-                    const file = e.target.files[0];
-                    if (!file) return;
-            
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        preview.innerHTML = `<img src="${e.target.result}" class="max-h-64 rounded-lg">`;
-                        preview.classList.remove('hidden');
-                    };
-                    reader.readAsDataURL(file);
-                });
-            }
-            
-            // Error Handling
-            window.onerror = function(message, source, lineno, colno, error) {
-                showToast(`Unexpected error: ${message}`, 'error');
-                console.error('Application error:', { message, source, lineno, colno, error });
-            };
+        });
+
+        // File Handling
+        document.getElementById('keyUpload').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            const keyData = await file.text();
+            currentKey = await window.crypto.subtle.importKey(
+                'jwk',
+                JSON.parse(keyData),
+                { name: 'AES-GCM' },
+                true,
+                ['encrypt', 'decrypt']
+            );
+            alert('Key imported successfully!');
+        });
+
+        // Utility Functions
+        function toggleModal(id) {
+            document.getElementById(id).classList.toggle('hidden');
+        }
+
+        document.querySelectorAll('.clear-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                btn.parentElement.querySelector('textarea').value = '';
+            });
+        });
+
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                navigator.clipboard.writeText(btn.parentElement.querySelector('textarea').value);
+            });
+        });
+
+        // Initialize
+        document.getElementById('aboutBtn').addEventListener('click', () => toggleModal('aboutModal'));
+        document.querySelectorAll('.hidden-section').forEach(s => s.classList.add('hidden-section'));
+        document.getElementById('hero').classList.remove('hidden-section');
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 </body>
 </html>
